@@ -3,7 +3,7 @@
 
 Welcome to the Interactive Storefront program! This Java application simulates a basic text-based store where users can browse, select, and purchase items from an inventory.
 
-**## Table of Contents**
+**Table of Contents**
 - [Overview](#overview)
 - [Classes](#classes)
   - [SalableItem](#salableitem-class)
@@ -12,17 +12,17 @@ Welcome to the Interactive Storefront program! This Java application simulates a
   - [StoreFront](#storefront-class)
 - [Usage](#usage)
 
-** Overview**
+**Overview**
 
 This program allows users to interact with a virtual storefront. Users can view the available items in the inventory, add items to their shopping cart, and then decide whether to proceed with their purchase or cancel it. The program keeps track of the user's cart and adjusts the inventory accordingly.
 
-** Classes**
+**Classes**
 
-** SalableItem Class**
+**SalableItem Class**
 
 Represents a salable item with a name, description, quantity, and price. This class is used to create items that can be added to both the inventory and the shopping cart.
 
-** InventoryManager Class **
+**InventoryManager Class**
 
 Manages the store's inventory of salable items. It provides methods to add and remove items from the inventory, as well as display the current inventory.
 
@@ -30,11 +30,11 @@ Manages the store's inventory of salable items. It provides methods to add and r
 
 Represents a shopping cart that holds a collection of salable items. Users can add items to the cart, calculate the total price of items in the cart, and empty the cart.
 
-** StoreFront Class**
+**StoreFront Class**
 
 Implements the main program logic. It simulates the interaction between the user and the store. Users can browse the inventory, add items to their cart, and decide whether to purchase or cancel their order.
 
-** Usage**
+**Usage**
 
 1.  Compile the program using a Java compiler.
 2.  Run the compiled program.
