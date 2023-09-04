@@ -29,11 +29,18 @@ public class StoreFront {
         this.cart = new ShoppingCart();
 
         // Adding initial items to the inventory
-        SalableItem item1 = new SalableItem("Sword", "melee weapon", 1, 10);
-        SalableItem item2 = new SalableItem("Blaster", "range weapon", 1, 15);
+		Weapon  gun = new Weapon("gun",10, 3, "Range Weapon", 10);
+		SalableItem bomb = new Weapon("bomb",20, 3, "splash weapon", 10);
+		SalableItem lgtArm = new Armor("Light", 50, 20, "Light Armor", 1 );
+		SalableItem hvyArm = new Armor("Heavy", 100, 20, "Heavy Armor", 1 );
+		SalableItem fullHlth = new Health("full", 100, 20, "Full Health", 1 );
+		
 
-        inventory.addItem(item1);
-        inventory.addItem(item2);
+		inventory.addItem(gun);
+		inventory.addItem(bomb);
+		inventory.addItem(lgtArm);
+		inventory.addItem(hvyArm);
+		inventory.addItem(fullHlth);
     }
 
     /**
@@ -72,8 +79,44 @@ public class StoreFront {
         int wantToBuy = scnr.nextInt();
 
         while (wantToBuy == 1) {
-            inventory.displayInventory();
-            System.out.println("What would you like to buy? Please enter the number. (-1 to quit)");
+        	
+        	// Prompts user to browse by type of item or the entire inventory
+        	 System.out.println("What would you like to do?");
+             System.out.println("1. Browse items by type");
+             System.out.println("2. Display entire inventory");
+             int option = scnr.nextInt();
+
+             if (option == 1) {
+            	 //prompts user for different types of items to purchase 
+                 System.out.println("What type of item would you like to buy?");
+                 System.out.println("1. Weapon");
+                 System.out.println("2. Armor");
+                 System.out.println("3. Health");
+                 int itemType = scnr.nextInt();
+
+                 ArrayList<? extends SalableItem> itemsToShow = new ArrayList<>();
+
+                 // Choose appropriate items based on itemType
+                 if (itemType == 1) {
+                     itemsToShow = inventory.getWeaponItems();
+                 } else if (itemType == 2) {
+                     itemsToShow = inventory.getArmorItems();
+                 } else if (itemType == 3) {
+                     itemsToShow = inventory.getHealthItems();
+                 }
+
+                 // Display available items of the selected type
+                 for (int i = 0; i < itemsToShow.size(); i++) {
+                     System.out.println(i + ". " + itemsToShow.get(i));
+                 }
+             } else if (option == 2) {
+                 // Display entire inventory
+                 inventory.displayInventory();
+             }
+
+             System.out.println("What would you like to buy? Please enter the number. (-1 to quit)");
+             
+
             int toBuy = scnr.nextInt();
             if (toBuy < 0) {
                 break;
