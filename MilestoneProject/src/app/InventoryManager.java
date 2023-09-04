@@ -3,26 +3,22 @@ package app;
 import java.util.ArrayList;
 
 /**
- * Manages the inventory of salable items.
+ * Manages the inventory of salable items, including weapons, armor, and health items.
  */
 public class InventoryManager {
     private ArrayList<SalableItem> inventory;
+    private ArrayList<Weapon> weaponItems;
+    private ArrayList<Armor> armorItems;
+    private ArrayList<Health> healthItems;
 
     /**
-     * Constructs an empty inventory manager.
+     * Constructs an empty inventory manager with separate lists for different item types.
      */
     public InventoryManager() {
         this.inventory = new ArrayList<>();
-    }
-
-    /**
-     * Generates a string representation of the inventory manager.
-     *
-     * @return A string representation of the inventory manager.
-     */
-    @Override
-    public String toString() {
-        return "InventoryManager [inventory=" + inventory + "]";
+        this.weaponItems = new ArrayList<>();
+        this.armorItems = new ArrayList<>();
+        this.healthItems = new ArrayList<>();
     }
 
     /**
@@ -32,7 +28,13 @@ public class InventoryManager {
      */
     public void addItem(SalableItem item) {
         inventory.add(item);
-        System.out.println("Item " + item.getName() + " added");
+        if (item instanceof Weapon) {
+            weaponItems.add((Weapon) item);
+        } else if (item instanceof Armor) {
+            armorItems.add((Armor) item);
+        } else if (item instanceof Health) {
+            healthItems.add((Health) item);
+        }
     }
 
     /**
@@ -41,7 +43,6 @@ public class InventoryManager {
      * @param item The salable item to be removed from the inventory.
      */
     public void removeItem(SalableItem item) {
-        System.out.println("Item " + item.getName() + " removed");
         inventory.remove(item);
     }
 
@@ -71,5 +72,32 @@ public class InventoryManager {
      */
     public int size() {
         return inventory.size();
+    }
+
+    /**
+     * Retrieves a list of weapon items in the inventory.
+     *
+     * @return A list of weapon items in the inventory.
+     */
+    public ArrayList<Weapon> getWeaponItems() {
+        return weaponItems;
+    }
+
+    /**
+     * Retrieves a list of armor items in the inventory.
+     *
+     * @return A list of armor items in the inventory.
+     */
+    public ArrayList<Armor> getArmorItems() {
+        return armorItems;
+    }
+
+    /**
+     * Retrieves a list of health items in the inventory.
+     *
+     * @return A list of health items in the inventory.
+     */
+    public ArrayList<Health> getHealthItems() {
+        return healthItems;
     }
 }
