@@ -2,7 +2,7 @@ package app;
 /**
  * Represents an armor item that can be sold.
  */
-public class Armor extends SalableItem{
+public class Armor extends SalableItem implements Comparable<Armor>{
 	private int shield;
 
 
@@ -29,6 +29,21 @@ public class Armor extends SalableItem{
 	 */
 	public int getShield() {
 		return shield;
+	}
+
+
+	/**
+     * Compares this Armor to another armor based on their names.
+     * The comparison is case-insensitive.
+     *
+     * @param otherArmor The armor to be compared.
+     * @return A negative integer, zero, or a positive integer as this armor's name
+     *         is less than, equal to, or greater than the specified armor's name.
+     */
+	@Override
+	public int compareTo(Armor otherArmor) {
+		// TODO Auto-generated method stub
+		return this.getName().compareToIgnoreCase(otherArmor.getName());
 	}
 
 }

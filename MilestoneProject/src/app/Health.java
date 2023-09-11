@@ -2,7 +2,7 @@ package app;
 /**
  * Represents an health item that can be sold.
  */
-public class Health extends SalableItem{
+public class Health extends SalableItem implements Comparable<Health>{
 	private int life;
 
 	/**
@@ -22,6 +22,19 @@ public class Health extends SalableItem{
 	 */
 	public int getLife() {
 		return life;
+	}
+	  /**
+     * Compares this health to another health based on their names.
+     * The comparison is case-insensitive.
+     *
+     * @param otherHealth The health to be compared.
+     * @return A negative integer, zero, or a positive integer as this health's name
+     *         is less than, equal to, or greater than the specified health's name.
+     */
+	@Override
+	public int compareTo(Health otherHealth) {
+		// TODO Auto-generated method stub
+		return this.getName().compareToIgnoreCase(otherHealth.getName());
 	}
 
 	
