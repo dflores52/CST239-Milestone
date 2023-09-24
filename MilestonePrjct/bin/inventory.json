@@ -1,0 +1,66 @@
+[
+  {
+    "type": "Weapon",
+    "name": "Sword",
+    "damage": 10,
+    "price": 50.0,
+    "description": "A powerful sword",
+    "quantity": 5
+  },
+  {
+    "type": "Armor",
+    "name": "Wooden Shield",
+    "shield": 5,
+    "price": 30.0,
+    "description": "A sturdy wooden shield",
+    "quantity": 3
+  },
+  {
+    "type": "Weapon",
+    "name": "Bow",
+    "damage": 7,
+    "price": 45.0,
+    "description": "A long-range weapon",
+    "quantity": 7
+  },
+  {
+    "type": "Armor",
+    "name": "Iron Helmet",
+    "shield": 8,
+    "price": 35.0,
+    "description": "Protection for the head",
+    "quantity": 4
+  },
+  {
+    "type": "Health",
+    "name": "Health Potion",
+    "heal": 25,
+    "price": 10.0,
+    "description": "Recovers 25 health points",
+    "quantity": 10
+  },
+  {
+    "type": "Weapon",
+    "name": "Dagger",
+    "damage": 5,
+    "price": 25.0,
+    "description": "A short knife",
+    "quantity": 8
+  },
+  {
+    "type": "Armor",
+    "name": "Leather Boots",
+    "shield": 3,
+    "price": 20.0,
+    "description": "Boots for swift movement",
+    "quantity": 6
+  },
+  {
+    "type": "Health",
+    "name": "Mana Potion",
+    "heal": 30,
+    "price": 12.0,
+    "description": "Recovers 30 mana points",
+    "quantity": 9
+  }
+]
