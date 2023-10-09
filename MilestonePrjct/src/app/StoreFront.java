@@ -2,6 +2,12 @@
  * 
  */
 package app;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -28,28 +34,34 @@ public class StoreFront {
         this.inventory = new InventoryManager();
         this.cart = new ShoppingCart();
 
-        // Adding initial items to the inventory
+/*
+	        // Adding initial items to the inventory
 		Weapon  gun = new Weapon("gun",10, 3, "Range Weapon", 10);
 		SalableItem bomb = new Weapon("bomb",20, 3, "splash weapon", 10);
 		SalableItem lgtArm = new Armor("Light", 50, 20, "Light Armor", 1 );
 		SalableItem hvyArm = new Armor("Heavy", 100, 20, "Heavy Armor", 1 );
 		SalableItem fullHlth = new Health("full", 100, 20, "Full Health", 1 );
 		
-/*
-		inventory.addItem(gun);
+	inventory.addItem(gun);
 		inventory.addItem(bomb);
 		inventory.addItem(lgtArm);
 		inventory.addItem(hvyArm);
 		inventory.addItem(fullHlth);
 		*/
-		  inventory.loadInventoryFromFile("/Users/flores/ workspaceCST-239/MilestonePrjct/bin/inventory.json");
+		 
+		inventory.loadInventoryFromFile("/Users/flores/ workspaceCST-239/MilestonePrjct/bin/inventory.json");
+		new Thread(this::startCommandListener).start();
+		
+    
+    
     }
 
     /**
      * Displays the total cost of items in the cart.
      */
-    public static void purchase() {
+    public static int purchase() {
         System.out.println("Your total is: " + cart.getTotal());
+        return cart.getTotal();
     }
 
     /**
@@ -144,40 +156,7 @@ public class StoreFront {
             int toBuy = scnr.nextInt();
             if (toBuy < 0) {
                 break;
-            /*Test
-            switch (toBuy) {
-                case -1:
-                    break;
-                case -2:
-                    inventory.sortByPriceAscending();
-                    inventory.displayInventory();
-                    continue; // Continue the loop to keep the user in the buying process
-                case -3:
-                    inventory.sortByPriceDescending();
-                    inventory.displayInventory();
-                    continue;
-                case -4:
-                    inventory.sortInventoryAscending();
-                    inventory.displayInventory();
-                    continue;
-                case -5:
-                    inventory.sortInventoryDescending();
-                    inventory.displayInventory();
-                    continue;
-                default:
-                    if (toBuy < inventory.size()) {
-                        SalableItem toCart = inventory.getItemFromInventory(toBuy);
-                        cart.addToCart(toCart);
-                        inventory.removeItem(toCart);
-                        cart.getCart();
-                        System.out.println("Do you want to buy more? (yes = 1, no = 2)");
-                        wantToBuy = scnr.nextInt();
-                    } else {
-                        System.out.println("Your request is out of bounds... NO SOUP FOR YOU!!! NEXT!");
-                        break;
-                    }
-            }
-            */
+           
             }
             if (toBuy < inventory.size()) {
                 SalableItem toCart = inventory.getItemFromInventory(toBuy);
@@ -204,6 +183,82 @@ public class StoreFront {
 
         System.out.println("Have a nice day.");
     }
+    /**
+     * Starts a command listener that listens for incoming admin commands on port 62626.
+     * <p>
+     * This method sets up a ServerSocket and continuously listens for incoming connections.
+     * Upon receiving a connection, it reads the command from the client and delegates the
+     * handling of the command to the handleAdminCommand method.
+     */   
+ private void startCommandListener() {
+	 int startPort = 62626;
+     int endPort = 62636;
+     int availablePort = ServerPortFinder.findAvailablePort(startPort, endPort);
+     // Write the port number to a file for the client to read
+     try (PrintWriter out = new PrintWriter("port.txt")) {
+         out.println(availablePort);
+     } catch (IOException e) {
+         e.printStackTrace();
+     }
+        try (ServerSocket serverSocket = new ServerSocket(availablePort)) {
+            while (true) {
+                try (Socket clientSocket = serverSocket.accept();
+                     BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
+                    String command = in.readLine();
+                    handleAdminCommand(command, clientSocket);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+ /**
+  * Handles admin commands received from the AdminTool.
+  * <p>
+  * This method takes a command and a client socket as parameters. It reads additional
+  * data if needed and performs actions based on the command.
+  * <ul>
+  *     <li>U - Updates the inventory based on a JSON payload</li>
+  *     <li>R - Returns the current inventory in JSON format</li>
+  * </ul>
+  *
+  * @param command      The admin command to handle. Expected values are "U" for Update and "R" for Retrieve.
+  * @param clientSocket The client socket from which the command was received.
+  * @throws IOException If an I/O error occurs while reading from or writing to the socket.
+  */    
+ private void handleAdminCommand(String command, Socket clientSocket) {
+    	 try {
+    	        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+    	        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+    	        switch (command) {
+    	            case "U":
+    	                // Read the JSON payload from the AdminTool
+    	                String jsonPayload = in.readLine();
+    	                // Update the inventory with the new Salable Products
+    	                inventory.loadInventoryFromFile("/Users/flores/ workspaceCST-239/MilestonePrjct/bin/inventory.json");
+    	                out.println("Inventory updated successfully.");
+    	                break;
+    	            case "R":
+    	                // Return the inventory in JSON format
+    	                String inventoryJson = inventory.toJson();
+    	                out.println(inventoryJson);
+    	                break;
+            // Add other cases as needed
+            default:
+                System.out.println("Unknown admin command received: " + command);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+}
+ public ShoppingCart getCart() {
+	    return this.cart;
+	}
+ public InventoryManager getInventory() {
+	    return this.inventory;
+	}
 
     /**
      * Main method to start the store simulation.
@@ -211,7 +266,10 @@ public class StoreFront {
      * @param args Command-line arguments.
      */
     public static void main(String[] args) {
+    	
         StoreFront store = new StoreFront("The Shop");
+        
         store.WelcomeUser();
+     
     }
 }

@@ -2,7 +2,8 @@ package app;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SalableItem.class)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Weapon.class, name = "Weapon"),
     @JsonSubTypes.Type(value = Armor.class, name = "Armor"),

@@ -19,6 +19,7 @@ public class Health extends SalableItem{
             @JsonProperty("description") String description,
             @JsonProperty("quantity") int quantity) {
 		super(name, price, description, quantity);
+		this.heal = heal;
 		// TODO Auto-generated constructor stub
 	}
 	/**

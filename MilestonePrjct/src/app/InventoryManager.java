@@ -8,8 +8,11 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 
 /**
  * Manages the inventory of salable items, including weapons, armor, and health items.
@@ -130,7 +133,7 @@ public class InventoryManager {
 public void loadInventoryFromFile(String filePath) {
     ObjectMapper objectMapper = new ObjectMapper();
     try {
-        inventory.clear(); // Clear existing inventory before loading from file
+       // inventory.clear(); // Clear existing inventory before loading from file
 
         // Read JSON data and convert it to a List of SalableItem objects
         List<SalableItem> items = objectMapper.readValue(new File(filePath),
@@ -190,6 +193,50 @@ public void sortByPriceDescending() {
         }
     });
 }
+/**
+ * Converts the inventory to a JSON string.
+ * 
+ * <p>This method takes the inventory list and converts it into a JSON-formatted string.
+ * If the conversion fails, it returns an empty JSON object.</p>
+ *
+ * @return A JSON-formatted string representing the inventory.
+ */
+public String toJson() {
+    try {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(this.inventory); // Assuming 'inventory' is the list/collection of Salable Products
+    } catch (Exception e) {
+        e.printStackTrace();
+        return "{}"; // Return an empty JSON object on error
+    }
+}
+/**
+ * Adds items to the inventory from a JSON string.
+ * 
+ * <p>This method takes a JSON-formatted string and converts it into a list of SalableItem objects.
+ * These objects are then added to the inventory. If the conversion fails, an error message is printed.</p>
+ *
+ * @param json The JSON-formatted string containing the items to be added.
+ */
+public void addItemsFromJson(String json) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+        List<SalableItem> items = objectMapper.readValue(json, new TypeReference<List<SalableItem>>() {});
+        inventory.addAll(items);
+        System.out.println(items.size() + " items added to the inventory from JSON.");
+    } catch (Exception e) {
+        System.err.println("Error parsing JSON data.");
+        e.printStackTrace();
+    }
+}
 
+/**
+ * Retrieves a list of salable items in the inventory.
+ *
+ * @return A list of salable items in the inventory.
+ */
+public List<SalableItem> getInventory() {
+    return inventory;
+}
 }
 
